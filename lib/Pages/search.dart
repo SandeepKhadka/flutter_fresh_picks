@@ -100,6 +100,7 @@ class GrocerySearchDelegate extends SearchDelegate<String> {
                     price: suggestionList[index]['price'],
                     description: suggestionList[index]['description'],
                     nutrition: suggestionList[index]['nutrition'],
+                    isFavorite: false,
                   ),
                 ),
               );
