@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:keyboard/Login/LOgin.dart';
+import 'package:keyboard/controller/authentication_controller.dart';
+import 'package:keyboard/newAdded/CustomValidator.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -123,14 +126,8 @@ class _SignupPageState extends State<SignupPage> {
                                 borderSide: BorderSide(color: Colors.black),
                               ),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your email';
-                              } else if (!value.contains('@gmail.com')) {
-                                return 'Invalid email format (should contain @gmail.com)';
-                              }
-                              return null;
-                            },
+                            validator: (value) =>
+                                Validator.validateEmail(value!),
                           ),
                           SizedBox(
                             height: 20,
@@ -149,12 +146,8 @@ class _SignupPageState extends State<SignupPage> {
                                 borderSide: BorderSide(color: Colors.black),
                               ),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your full name';
-                              }
-                              return null;
-                            },
+                            validator: (value) =>
+                                Validator.validateName(value!),
                           ),
                           SizedBox(
                             height: 20,
@@ -176,14 +169,8 @@ class _SignupPageState extends State<SignupPage> {
                               ),
                             ),
                             keyboardType: TextInputType.number,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your phone number';
-                              } else if (value.length > 10) {
-                                return 'Invaild number format (should contain at least 10 digits)';
-                              }
-                              return null;
-                            },
+                            validator: (value) =>
+                                Validator.validateMobile(value!),
                           ),
                           SizedBox(
                             height: 20,
@@ -220,14 +207,8 @@ class _SignupPageState extends State<SignupPage> {
                                 borderSide: BorderSide(color: Colors.black),
                               ),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your password';
-                              } else if (value.length < 6) {
-                                return 'Password must be at least 6 characters';
-                              }
-                              return null;
-                            },
+                            validator: (value) =>
+                                Validator.validatePasswordLength(value!),
                           ),
                           SizedBox(
                             height: 20,
@@ -295,9 +276,19 @@ class _SignupPageState extends State<SignupPage> {
                             child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
+                                  var data = {
+                                    'email': emailController.text,
+                                    'password': passwordController.text,
+                                    'name': nameController.text,
+                                    'phone': phoneController.text
+                                  };
+                                  print(data);
+                                  Get.find<AuthenticationController>()
+                                      .signUp(data, context);
+
                                   // If the form is valid, proceed with navigation
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => LoginPage()));
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //     builder: (context) => LoginPage()));
                                 }
                               },
                               style: ElevatedButton.styleFrom(

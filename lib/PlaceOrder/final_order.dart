@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:keyboard/PlaceOrder/confirm.dart';
 
 class FinalOrder extends StatefulWidget {
@@ -16,7 +17,9 @@ class _FinalOrderState extends State<FinalOrder> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.back();
+          },
           icon: Icon(
             Icons.arrow_back_ios_outlined,
           ),

@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.2.5 <4.0.0'
+  sdk: '>=3.2.3 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -41,6 +41,19 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   image_picker: ^1.0.7
   payment: ^0.0.1
+  shared_preferences: ^2.2.2
+  animated_custom_dropdown: ^3.0.0
+  timeline_tile: ^2.0.0
+  banner_listtile: ^2.3.0
+  flutter_slidable: ^3.1.0
+  get: ^4.6.6
+  lottie: ^3.1.0
+  cached_network_image: ^3.3.1
+  fluttertoast: ^8.0.9
+  flutter_staggered_grid_view: ^0.7.0
+  khalti: ^2.0.0
+  # connectivity_plus: ^6.0.1
+
   
 
 dev_dependencies:
@@ -110,6 +123,15 @@ flutter:
     - assets/strawberry.png
     - assets/esewa1.png
     - assets/edit.png
+    - assets/order.png
+
+
+
+    - assets/images/
+    - assets/anim/
+    - assets/svg/
+    - assets/gif/
+   
     
 
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../Pages/Product_Details.dart';
+import '../controller/getProduct_controller.dart';
 
 class CartItem {
   final String name;
@@ -152,12 +154,15 @@ class VegetableWidget extends StatelessWidget {
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => ProductDetails(
-                                name: product['name'],
-                                image: product['image'],
-                                price: product['price'],
-                                description: product['description'],
-                                nutrition: product['nutrition'],
-                                isFavorite: false,
+                                productss:
+                                    Get.find<ProductController>().products[1],
+
+                                // name: product['name'],
+                                // image: product['image'],
+                                // price: product['price'],
+                                // description: product['description'],
+                                // nutrition: product['nutrition'],
+                                // isFavorite: false,
                               ),
                             ));
                           },

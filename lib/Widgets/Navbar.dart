@@ -47,8 +47,8 @@ class BottomNavBarWidget extends StatelessWidget {
             icon: Icons.favorite_outline_rounded,
             text: 'Favorites',
             onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => Favourite()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => FavoritePage()));
             },
           ),
           _NavBarItem(

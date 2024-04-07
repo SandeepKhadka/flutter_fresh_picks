@@ -5,9 +5,7 @@ import 'package:provider/provider.dart';
 
  // Assuming your MyCart widget is in my_cart.dart file
 
-void main() {
-  runApp(MyApp());
-}
+
 
 class MyApp extends StatelessWidget {
   @override

@@ -1,85 +1,109 @@
 import 'package:flutter/material.dart';
-import 'package:keyboard/Pages/Product_Details.dart';
+import 'package:get/get.dart';
+import 'package:keyboard/model/getProducts_model.dart';
+import 'package:keyboard/newAdded/ui_assets.dart';
+import '../controller/wishlist_controller.dart';
+import '../Pages/Product_Details.dart';
 
-class Favourite extends StatefulWidget {
-  const Favourite({Key? key}) : super(key: key);
-
-  @override
-  State<Favourite> createState() => _FavouriteState();
-}
-
-class _FavouriteState extends State<Favourite> {
+class FavoritePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Favourites'),
+      appBar: AppBar( 
+        title: Text('Favorite Page'),
       ),
-      body: ListView(
-        children: [
-          ListTile(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProductDetails(
-                    name: 'Apple',
-                    image: 'assets/apple.png',
-                    price: 10,
-                    description: 'Description of Apple',
-                    nutrition: 'Nutrition information of Apple',
-                    isFavorite: true, // Example value for isFavorite
+      body: Get.find<WishlistController>().wishlist.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    UIAssets.emptyWishlist,
+                    height: MediaQuery.of(context).size.height / 2,
+                    width: MediaQuery.of(context).size.width / 2,
                   ),
-                ),
-              );
-            },
-            leading: CircleAvatar(
-              backgroundImage: AssetImage('assets/apple.png'),
+                  SizedBox(height: 5),
+                  Text(
+                    "Your wishlist is empty",
+                    style: TextStyle(fontSize: 18),                  ),
+                ],
+              ),
+            )
+          : GetBuilder<WishlistController>(
+              builder: (_) => ListView.builder(
+                itemCount: _.wishlist.length,
+                itemBuilder: (context, index) {
+                  final product = _.wishlist[index];
+                  return ListTile(
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            // Navigate to product details page when clicking on product name
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductDetailsPage(
+                                  product: product,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            product.name,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Text(
+                          'Price: ${product.price}',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                      ),
+                      onPressed: () {
+                        // Remove item from wishlist when clicking on delete button
+                        _.removeFromWishlist(product);
+                        _.update();
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
-            title: Text('Apple'),
-            trailing: IconButton(
-              icon: Icon(Icons.favorite),
-              onPressed: () {
-                // Add onPressed logic here
-              },
-            ),
-          ),
-          ListTile(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProductDetails(
-                    name: 'Avocado',
-                    image: 'assets/avocado.png',
-                    price: 15,
-                    description: 'Description of Avocado',
-                    nutrition: 'Nutrition information of Avocado',
-                    isFavorite: false, // Example value for isFavorite
-                  ),
-                ),
-              );
-            },
-            leading: CircleAvatar(
-              backgroundImage: AssetImage('assets/avocado.png'),
-            ),
-            title: Text('Avocado'),
-            trailing: IconButton(
-              icon: Icon(Icons.favorite_border),
-              onPressed: () {
-                // Add onPressed logic here
-              },
-            ),
-          ),
-          // Add more list items as needed
-        ],
-      ),
     );
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: Favourite(),
-  ));
+class ProductDetailsPage extends StatelessWidget {
+  final GetProducts product;
+
+  const ProductDetailsPage({Key? key, required this.product}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Product Details'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Name: ${product.name}'),
+            Text('Image: ${product.image}'),
+            Text('Description: ${product.description}'),
+            Text('Price: ${product.price}'),
+            // Text('Nutrition: ${product.nutrition}'),
+            // Text('Is Favorite: ${product.isFavorite}'),
+          ],
+        ),
+      ),
+    );
+  }
 }

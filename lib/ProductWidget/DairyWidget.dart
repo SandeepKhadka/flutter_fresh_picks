@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:keyboard/controller/getProduct_controller.dart';
 import '../Pages/Product_Details.dart';
 
 class CartItem {
@@ -153,13 +155,15 @@ class DairyWidget extends StatelessWidget {
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => ProductDetails(
-                                name: product['name'],
-                                image: product['image'],
-                                price: product['price'],
-                                description: product['description'],
-                                nutrition: product['nutrition'],
-                                isFavorite:
-                                    false, // Example value for isFavorite
+                                productss:
+                                    Get.find<ProductController>().products[1],
+                                // name: product['name'],
+                                // image: product['image'],
+                                // price: product['price'],
+                                // description: product['description'],
+                                // nutrition: product['nutrition'],
+                                // isFavorite:
+                                //     false, // Example value for isFavorite
                               ),
                             ));
                           },

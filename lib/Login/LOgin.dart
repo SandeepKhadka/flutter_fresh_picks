@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:keyboard/Login/Signup.dart';
 import 'package:keyboard/Login/forgotpassword.dart';
 import 'package:keyboard/Pages/homepage.dart';
+import 'package:keyboard/controller/authentication_controller.dart';
+
+import 'package:keyboard/newAdded/CustomValidator.dart';
+import 'package:keyboard/newAdded/loading_dialog.dart';
+import 'package:keyboard/newAdded/toast.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key});
@@ -11,6 +17,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool obscureText = true;
@@ -70,13 +77,15 @@ class _LoginPageState extends State<LoginPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 18.0, right: 18),
                   child: Form(
+                    key: formKey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
                           height: 60,
                         ),
-                        TextField(
+                        TextFormField(
+                          validator: (value) => Validator.validateEmail(value!),
                           controller: emailController,
                           decoration: InputDecoration(
                             labelText: "Enter your email",
@@ -164,8 +173,18 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => HomePage()));
+                              var isValid = formKey.currentState!.validate();
+                              if (isValid) {
+                                var data = {
+                                  'email': emailController.text,
+                                  'password': passwordController.text
+                                };
+
+                                Get.find<AuthenticationController>()
+                                    .signIn(data, context);
+                              }
+
+                              
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green[400],
@@ -200,8 +219,7 @@ class _LoginPageState extends State<LoginPage> {
                               Text("Don't have an account?"),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => SignupPage()));
+                                  Get.to(SignupPage());
                                   // Implement the navigation logic for sign up
                                 },
                                 child: Text("Sign Up"),

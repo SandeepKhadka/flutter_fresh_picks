@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:keyboard/Login/LOgin.dart';
+import 'package:keyboard/checkout/final_order.dart';
+import 'package:keyboard/controller/user_Controller.dart';
 
 import 'package:keyboard/drawerwidget/details.dart';
 import 'package:keyboard/drawerwidget/location.dart';
+import 'package:keyboard/drawerwidget/orders.dart';
+import 'package:keyboard/model/getCategory.dart';
+import 'package:keyboard/model/userDetails.dart';
 
 class CustomDrawer extends StatelessWidget {
   @override
@@ -15,8 +21,8 @@ class CustomDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             UserAccountsDrawerHeader(
-              accountName: Text("Prajal Jung Kunwar"),
-              accountEmail: Text("prajaljungkunwar@gmail.com"),
+              accountName: Text(Get.find<UserController>().userName),
+              accountEmail: Text(Get.find<UserController>().email),
               currentAccountPicture: CircleAvatar(
                 child: ClipOval(
                   child: Image.asset("assets/pjk.png"),
@@ -68,9 +74,14 @@ class CustomDrawer extends StatelessWidget {
             ),
             Divider(),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text("Settings"),
-              onTap: () => print("My Settings"),
+              leading: ImageIcon(
+                AssetImage("assets/order.png"),
+              ),
+              title: Text("My Orders"),
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => Orders()));
+              },
               trailing: Icon(Icons.arrow_forward_ios_rounded),
             ),
             Divider(),

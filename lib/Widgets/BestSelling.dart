@@ -1,158 +1,161 @@
-import 'package:flutter/material.dart';
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import '../Pages/Product_Details.dart';
+import 'package:get/get.dart';
+import 'package:keyboard/Pages/Product_Details.dart';
+import 'package:keyboard/newAdded/api_constants.dart';
+
+import '../controller/getProduct_controller.dart';
+import '../controller/wishlist_controller.dart';
 
 class BestSelling extends StatelessWidget {
-  final List<Map<String, dynamic>> products = [
-    {
-      "name": "Star Fruit",
-      "image": "assets/starfruit.png",
-      "description": "Indulge in a celestial flavor experience with star fruit",
-      "price": "Rs 480",
-      "rating": 2,
-    },
-    {
-      "name": "Marpha Apple",
-      "image": "assets/apple.png",
-      "description": "Juicy symphony of flavors with the classic apple",
-      "price": "Rs 250",
-      "rating": 4.0,
-    },
-    {
-      "name": "Spinach",
-      "image": "assets/spinach.png",
-      "description":
-          "Dive into its vibrant green hues and savor the earthy essence",
-      "price": "Rs 80",
-      "rating": 4.5,
-    },
-  ];
-
-  final List<String> productNutritions = [
-    "100",
-    "200",
-    "150",
-  ]; // Adjust the list according to your actual nutritional data
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Padding(
+      child: Container(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        child: Column(
-          children: [
-            for (int index = 0; index < products.length; index++)
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProductDetails(
-                        name: products[index]['name'],
-                        image: products[index]['image'],
-                        description: products[index]['description'],
-                        price: (index + 1) * 100,
-                        nutrition: productNutritions[index],
-                        isFavorite: false, // Provide nutrition data
+        child: GetBuilder<ProductController>(
+          builder: (_) => GetBuilder<WishlistController>(
+            builder: (wishlistController) => ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: _.products.length,
+              itemBuilder: (context, index) {
+                bool isInWishlist =
+                    wishlistController.isInWishlist(_.products[index]);
+                bool isInCart = wishlistController.isInCart(_.products[index]);
+
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductDetails(
+                            productss: _.products[index],
+                          ),
+                        ),
+                      );
+                    },
+                    child: 
+                    
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 3,
+                            blurRadius: 10,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Image.network(
+                            PRODUCT_IMAGE_URL + _.products[index].image,
+                            height: 130,
+                            fit: BoxFit
+                                .cover, // Optional: Adjust the image fit based on your requirement
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    _.products[index].name,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    _.products[index].description,
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  SizedBox(height: 5),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    "RS= " + _.products[index].price,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  isInWishlist
+                                      ? Icons.favorite
+                                      : Icons.favorite_border_rounded,
+                                  color:
+                                      isInWishlist ? Colors.red : Colors.grey,
+                                ),
+                                onPressed: () {
+                                  if (isInWishlist) {
+                                    wishlistController
+                                        .removeFromWishlist(_.products[index]);
+                                    print(
+                                        'Removed from wishlist: ${_.products[index].name}');
+                                  } else {
+                                    wishlistController
+                                        .addToWishlist(_.products[index]);
+                                    print(
+                                        'Added to wishlist: ${_.products[index].name}');
+                                  }
+                                  _.update(); // Update the UI
+                                },
+                              ),
+                              SizedBox(height: 60),
+                              IconButton(
+                                icon: Icon(
+                                  isInCart
+                                      ? CupertinoIcons.cart_fill
+                                      : CupertinoIcons.cart,
+                                  color: isInCart ? Colors.red : Colors.grey,
+                                ),
+                                onPressed: () {
+                                  if (isInCart) {
+                                    wishlistController
+                                        .removeFromCart(_.products[index]);
+                                    print(
+                                        'Removed from cart: ${_.products[index].name}');
+                                  } else {
+                                    wishlistController
+                                        .addTocart(_.products[index]);
+                                    print(
+                                        'Added to cart: ${_.products[index].name}');
+                                  }
+                                  _.update(); // Update the UI
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                  );
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 3,
-                          blurRadius: 10,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 150,
-                          height: 150,
-                          child: Image.asset(
-                            products[index]['image'],
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  products[index]['name'],
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                Text(
-                                  products[index]['description'],
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                                SizedBox(height: 5),
-                                RatingBar.builder(
-                                  initialRating:
-                                      products[index]['rating'].toDouble(),
-                                  minRating: 1,
-                                  direction: Axis.horizontal,
-                                  itemCount: 5,
-                                  itemSize: 20,
-                                  itemBuilder: (context, _) => Icon(
-                                    Icons.star,
-                                    color: Colors.green,
-                                  ),
-                                  onRatingUpdate: (double rating) {},
-                                ),
-                                SizedBox(height: 5),
-                                Text(
-                                  products[index]['price'],
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.favorite_border_rounded),
-                              color: Colors.red,
-                              onPressed: () {},
-                            ),
-                            SizedBox(height: 60),
-                            IconButton(
-                              icon: Icon(CupertinoIcons.cart_fill),
-                              color: Colors.green,
-                              onPressed: () {},
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
                   ),
-                ),
-              ),
-          ],
+                );
+              },
+            ),
+          ),
         ),
       ),
     );
