@@ -12,12 +12,20 @@ import 'package:keyboard/controller/authentication_controller.dart';
 import 'package:keyboard/controller/cart_controller.dart';
 import 'package:keyboard/controller/getCategoryController.dart';
 import 'package:keyboard/controller/getProduct_controller.dart';
+import 'package:keyboard/controller/get_banner_controller.dart';
 import 'package:keyboard/controller/myOrders_Controller.dart';
+import 'package:keyboard/controller/update_profile_Controller.dart';
 import 'package:keyboard/controller/wishlist_controller.dart';
+import 'package:khalti/khalti.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Khalti.init(
+      publicKey: 'test_public_key_196df8c10c0743f68f66d5ded92b5157',
+      enabledDebugging: false);
+
   Get.put(ProductController());
 
   Get.put(AuthenticationController());
@@ -26,29 +34,10 @@ void main() {
   Get.put(GetCategoryController());
   Get.put(BuyController());
   Get.put(MyOrder());
+  Get.put(GetBannersController());
+  Get.put(UpdateProfileController());
 
   runApp(const GetMaterialApp(
     home: LoginPage(),
-  )
-      // MultiProvider(
-      //   providers: [
-      //     ChangeNotifierProvider(create: (context) => LoginModel()),
-      //   ],
-      //   child: MaterialApp(
-      //     title: 'Your App Title',
-      //     theme: ThemeData(
-      //       colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-      //       useMaterial3: true,
-      //     ),
-      //     initialRoute: '/splash', // Add the initial route
-      //     routes: {
-      //       '/splash': (context) => Splash(), // Splash screen route
-      //       '/resetPassword': (context) =>
-      //           ResetPassword(), // Reset password screen route
-      //       '/success': (context) => Success(), // Success screen route
-      //       '/mycart': (context) => MyCart(), // MyCart screen route
-      //     },
-      //   ),
-      // ),
-      );
+  ));
 }

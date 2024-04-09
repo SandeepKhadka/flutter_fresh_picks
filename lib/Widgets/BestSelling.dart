@@ -21,11 +21,12 @@ class BestSelling extends StatelessWidget {
             builder: (wishlistController) => ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: _.products.length,
+              itemCount: _.getNewProduct.length,
               itemBuilder: (context, index) {
                 bool isInWishlist =
-                    wishlistController.isInWishlist(_.products[index]);
-                bool isInCart = wishlistController.isInCart(_.products[index]);
+                    wishlistController.isInWishlist(_.getNewProduct[index]);
+                bool isInCart =
+                    wishlistController.isInCart(_.getNewProduct[index]);
 
                 return Padding(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -40,9 +41,7 @@ class BestSelling extends StatelessWidget {
                         ),
                       );
                     },
-                    child: 
-                    
-                    Container(
+                    child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -60,7 +59,7 @@ class BestSelling extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Image.network(
-                            PRODUCT_IMAGE_URL + _.products[index].image,
+                            PRODUCT_IMAGE_URL + _.getNewProduct[index].image,
                             height: 130,
                             fit: BoxFit
                                 .cover, // Optional: Adjust the image fit based on your requirement
@@ -72,7 +71,7 @@ class BestSelling extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    _.products[index].name,
+                                    _.getNewProduct[index].name,
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
@@ -80,13 +79,20 @@ class BestSelling extends StatelessWidget {
                                   ),
                                   SizedBox(height: 5),
                                   Text(
-                                    _.products[index].description,
+                                    overflow: TextOverflow.ellipsis,
+                                    _.getNewProduct[index].description,
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  Text(
+                                    "Quantity = " +
+                                        _.getNewProduct[index].quantity +
+                                        " KG",
                                     style: TextStyle(fontSize: 14),
                                   ),
                                   SizedBox(height: 5),
                                   SizedBox(height: 5),
                                   Text(
-                                    "RS= " + _.products[index].price,
+                                    "RS= " + _.getNewProduct[index].price,
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.green,
@@ -110,15 +116,15 @@ class BestSelling extends StatelessWidget {
                                 ),
                                 onPressed: () {
                                   if (isInWishlist) {
-                                    wishlistController
-                                        .removeFromWishlist(_.products[index]);
+                                    wishlistController.removeFromWishlist(
+                                        _.getNewProduct[index]);
                                     print(
-                                        'Removed from wishlist: ${_.products[index].name}');
+                                        'Removed from wishlist: ${_.getNewProduct[index].name}');
                                   } else {
                                     wishlistController
-                                        .addToWishlist(_.products[index]);
+                                        .addToWishlist(_.getNewProduct[index]);
                                     print(
-                                        'Added to wishlist: ${_.products[index].name}');
+                                        'Added to wishlist: ${_.getNewProduct[index].name}');
                                   }
                                   _.update(); // Update the UI
                                 },
@@ -134,14 +140,14 @@ class BestSelling extends StatelessWidget {
                                 onPressed: () {
                                   if (isInCart) {
                                     wishlistController
-                                        .removeFromCart(_.products[index]);
+                                        .removeFromCart(_.getNewProduct[index]);
                                     print(
-                                        'Removed from cart: ${_.products[index].name}');
+                                        'Removed from cart: ${_.getNewProduct[index].name}');
                                   } else {
                                     wishlistController
-                                        .addTocart(_.products[index]);
+                                        .addTocart(_.getNewProduct[index]);
                                     print(
-                                        'Added to cart: ${_.products[index].name}');
+                                        'Added to cart: ${_.getNewProduct[index].name}');
                                   }
                                   _.update(); // Update the UI
                                 },

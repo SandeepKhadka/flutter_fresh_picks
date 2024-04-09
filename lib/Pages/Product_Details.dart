@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -104,7 +106,10 @@ class ProductDetails extends StatelessWidget {
               margin: EdgeInsets.symmetric(vertical: 20),
               width: double.infinity,
               color: Colors.grey[200],
-              child: Image.network(PRODUCT_IMAGE_URL + productss.image),
+              child: Image.network(
+                PRODUCT_IMAGE_URL + productss.image,
+                fit: BoxFit.contain,
+              ),
             ),
             Padding(
               padding: EdgeInsets.all(16.0),
@@ -128,7 +133,7 @@ class ProductDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Price: ${productss.price}",
+                        "Price: ${double.parse(productss.discount) > 0 ? productss.discount : productss.price}",
                         style: TextStyle(fontSize: 20),
                       ),
                     ],
@@ -138,6 +143,7 @@ class ProductDetails extends StatelessWidget {
                   SizedBox(height: 5),
                   Text(
                     productss.description,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontSize: 15, color: Colors.grey),
                   ),
                   SizedBox(height: 20),
@@ -147,7 +153,7 @@ class ProductDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Nutritions",
+                        "Quantity",
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -163,7 +169,7 @@ class ProductDetails extends StatelessWidget {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 4),
                             child: Text(
-                              productss.summary,
+                              productss.quantity + "  KG",
                               style: TextStyle(
                                 color: Colors.white,
                               ),

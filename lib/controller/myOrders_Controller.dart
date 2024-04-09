@@ -57,6 +57,7 @@ class MyOrder extends GetxController {
       }
     } catch (e) {
       isLoading.value = false;
+      print(e);
 
       print("Something bad happen");
       // Get.snackbar("", "Something bad happened");

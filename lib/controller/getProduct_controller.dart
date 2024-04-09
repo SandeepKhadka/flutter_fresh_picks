@@ -15,8 +15,10 @@ import '../newAdded/loading_dialog.dart';
 class ProductController extends GetxController {
   RxList<GetProducts> products = RxList<GetProducts>([]);
   RxList<GetProducts> exoticproducts = RxList<GetProducts>([]);
+  RxList<GetProducts> getNewProduct = RxList<GetProducts>([]);
   RxList<GetProducts> getDiscountProduct = RxList<GetProducts>([]);
   RxList<GetProducts> getProductAccCategory = <GetProducts>[].obs;
+
   var isLoading = false.obs;
 
   //onit
@@ -27,6 +29,7 @@ class ProductController extends GetxController {
     get();
     getExoticProduct();
     getDiscountProducts();
+    getNewProducts();
   }
 
   get() async {
@@ -58,6 +61,25 @@ class ProductController extends GetxController {
             products.map<GetProducts>((e) => GetProducts.fromJson(e)).toList();
         print(products);
         print("EXOTIC ITEMS FETCHED SUCCESSFULLY");
+        update();
+      } else {}
+      ;
+    } catch (e) {
+      Get.snackbar("", "something bad happen");
+    }
+  }
+
+  getNewProducts() async {
+    try {
+      var response = await http.get(Uri.parse(GET_NEW_PRODUCTAPI));
+
+      // Future.delayed(Duration(seconds: 10), () {
+      if (response.statusCode == 200) {
+        var products = jsonDecode(response.body)["products"];
+        this.getNewProduct.value =
+            products.map<GetProducts>((e) => GetProducts.fromJson(e)).toList();
+        print(products);
+        print("New Product FETCHED SUCCESSFULLY");
         update();
       } else {}
       ;

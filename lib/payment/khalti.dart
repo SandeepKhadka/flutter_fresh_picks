@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:keyboard/PlaceOrder/confirm.dart';
+import 'package:keyboard/controller/user_Controller.dart';
 import 'package:khalti/khalti.dart';
 
+import '../controller/Buy_Product_Controller.dart';
+
 class KhaltiExampleApp extends StatelessWidget {
-  const KhaltiExampleApp({Key? key}) : super(key: key);
+  final double totalPrice;
+  final List<dynamic> productJsonData;
+  final String address;
+
+  const KhaltiExampleApp(
+      {Key? key,
+      required this.totalPrice,
+      required this.productJsonData,
+      required this.address})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +33,13 @@ class KhaltiExampleApp extends StatelessWidget {
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
-            WalletPayment(),
+            WalletPayment(
+              productJsonData: productJsonData,
+              totalPrice: totalPrice,
+              address: address,
+            ),
             Banking(paymentType: PaymentType.eBanking),
             Banking(paymentType: PaymentType.mobileCheckout),
           ],
@@ -32,7 +50,16 @@ class KhaltiExampleApp extends StatelessWidget {
 }
 
 class WalletPayment extends StatefulWidget {
-  const WalletPayment({Key? key}) : super(key: key);
+  final List<dynamic> productJsonData;
+  final double totalPrice;
+  final String address;
+
+  const WalletPayment(
+      {Key? key,
+      required this.productJsonData,
+      required this.totalPrice,
+      required this.address})
+      : super(key: key);
 
   @override
   State<WalletPayment> createState() => _WalletPaymentState();
@@ -41,6 +68,7 @@ class WalletPayment extends StatefulWidget {
 class _WalletPaymentState extends State<WalletPayment> {
   late final TextEditingController _mobileController, _pinController;
   final GlobalKey<FormState> _formKey = GlobalKey();
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -79,49 +107,71 @@ class _WalletPaymentState extends State<WalletPayment> {
           ),
           const SizedBox(height: 24),
           ElevatedButton(
-            onPressed: () async {
-              if (!(_formKey.currentState?.validate() ?? false)) return;
-              final messenger = ScaffoldMessenger.maybeOf(context);
-              final initiationModel = await Khalti.service.initiatePayment(
-                request: PaymentInitiationRequestModel(
-                  amount: 1000,
-                  mobile: _mobileController.text,
-                  productIdentity: 'mac-mini',
-                  productName: 'Apple Mac Mini',
-                  transactionPin: _pinController.text,
-                  productUrl: 'https://khalti.com/bazaar/mac-mini-16-512-m1',
-                  additionalData: {
-                    'vendor': 'Oliz Store',
-                    'manufacturer': 'Apple Inc.',
-                  },
-                ),
-              );
-
-              final otpCode = await _showOTPSentDialog();
-
-              if (otpCode != null) {
-                try {
-                  final model = await Khalti.service.confirmPayment(
-                    request: PaymentConfirmationRequestModel(
-                      confirmationCode: otpCode,
-                      token: initiationModel.token,
-                      transactionPin: _pinController.text,
-                    ),
-                  );
-
-                  debugPrint(model.toString());
-                } catch (e) {
-                  messenger?.showSnackBar(
-                    SnackBar(content: Text(e.toString())),
-                  );
-                }
-              }
-            },
-            child: const Text('PAY Rs. 10'),
+            onPressed: _isLoading ? null : _initiatePayment,
+            child: _isLoading
+                ? CircularProgressIndicator()
+                : Text('PAY Rs. ${widget.totalPrice}'),
           ),
         ],
       ),
     );
+  }
+
+  void _initiatePayment() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    setState(() {
+      _isLoading = true;
+    });
+    var data = {
+      "user_id": Get.find<UserController>().id.toString(),
+      "payment_method": "khalti",
+      "total_amount": widget.totalPrice.toStringAsFixed(2),
+      "delivery_address": widget.address,
+      "products": widget.productJsonData
+    };
+
+    // Get.to(OrderSuccessful());
+
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    final initiationModel = await Khalti.service.initiatePayment(
+      request: PaymentInitiationRequestModel(
+        amount: 1000,
+        mobile: _mobileController.text,
+        productIdentity: 'mac-mini',
+        productName: 'Apple Mac Mini',
+        transactionPin: _pinController.text,
+        productUrl: 'https://khalti.com/bazaar/mac-mini-16-512-m1',
+        additionalData: {
+          'vendor': 'Oliz Store',
+          'manufacturer': 'Apple Inc.',
+        },
+      ),
+    );
+
+    final otpCode = await _showOTPSentDialog();
+
+    if (otpCode != null) {
+      try {
+        final model = await Khalti.service.confirmPayment(
+          request: PaymentConfirmationRequestModel(
+            confirmationCode: otpCode,
+            token: initiationModel.token,
+            transactionPin: _pinController.text,
+          ),
+        );
+
+        debugPrint(model.toString());
+        Get.put(BuyController().add(data));
+        Get.to(OrderSuccessful());
+      } catch (e) {
+        messenger?.showSnackBar(
+          SnackBar(content: Text("Invalid MPIN")),
+        );
+      }
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   Future<String?> _showOTPSentDialog() {

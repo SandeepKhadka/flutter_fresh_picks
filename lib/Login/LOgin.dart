@@ -145,27 +145,27 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: 10,
                         ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => ForgotPassword(),
-                                ),
-                              );
-                            },
-                            child: Text(
-                              "Forgot Password?",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                fontStyle: FontStyle.italic,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Align(
+                        //   alignment: Alignment.centerRight,
+                        //   child: TextButton(
+                        //     onPressed: () {
+                        //       Navigator.of(context).push(
+                        //         MaterialPageRoute(
+                        //           builder: (context) => ForgotPassword(),
+                        //         ),
+                        //       );
+                        //     },
+                        //     child: Text(
+                        //       "Forgot Password?",
+                        //       style: TextStyle(
+                        //         fontSize: 15,
+                        //         fontWeight: FontWeight.bold,
+                        //         fontStyle: FontStyle.italic,
+                        //         color: Colors.blue,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 50,
                         ),
@@ -183,8 +183,6 @@ class _LoginPageState extends State<LoginPage> {
                                 Get.find<AuthenticationController>()
                                     .signIn(data, context);
                               }
-
-                              
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green[400],

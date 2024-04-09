@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:keyboard/HelpPage/Help_Page.dart';
 import 'package:keyboard/Login/LOgin.dart';
 import 'package:keyboard/checkout/final_order.dart';
 import 'package:keyboard/controller/user_Controller.dart';
@@ -23,11 +24,6 @@ class CustomDrawer extends StatelessWidget {
             UserAccountsDrawerHeader(
               accountName: Text(Get.find<UserController>().userName),
               accountEmail: Text(Get.find<UserController>().email),
-              currentAccountPicture: CircleAvatar(
-                child: ClipOval(
-                  child: Image.asset("assets/pjk.png"),
-                ),
-              ),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage("assets/green.png"),
@@ -47,31 +43,31 @@ class CustomDrawer extends StatelessWidget {
               trailing: Icon(Icons.arrow_forward_ios_rounded),
             ),
             Divider(),
-            ListTile(
-              leading: Icon(Icons.location_on),
-              title: Text("Delivery Address"),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => AddressWidget()),
-                );
-                print("My Location");
-              },
-              trailing: Icon(Icons.arrow_forward_ios_rounded),
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.payment),
-              title: Text("Payment Method"),
-              onTap: () => print("Payment"),
-              trailing: Icon(Icons.arrow_forward_ios_rounded),
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.local_offer),
-              title: Text("Promo Code"),
-              onTap: () => print("Promo code"),
-              trailing: Icon(Icons.arrow_forward_ios_rounded),
-            ),
+            // ListTile(
+            //   leading: Icon(Icons.location_on),
+            //   title: Text("Delivery Address"),
+            //   onTap: () {
+            //     Navigator.of(context).push(
+            //       MaterialPageRoute(builder: (context) => AddressWidget()),
+            //     );
+            //     print("My Location");
+            //   },
+            //   trailing: Icon(Icons.arrow_forward_ios_rounded),
+            // ),
+            // Divider(),
+            // ListTile(
+            //   leading: Icon(Icons.payment),
+            //   title: Text("Payment Method"),
+            //   onTap: () => print("Payment"),
+            //   trailing: Icon(Icons.arrow_forward_ios_rounded),
+            // ),
+            // Divider(),
+            // ListTile(
+            //   leading: Icon(Icons.local_offer),
+            //   title: Text("Promo Code"),
+            //   onTap: () => print("Promo code"),
+            //   trailing: Icon(Icons.arrow_forward_ios_rounded),
+            // ),
             Divider(),
             ListTile(
               leading: ImageIcon(
@@ -85,10 +81,11 @@ class CustomDrawer extends StatelessWidget {
               trailing: Icon(Icons.arrow_forward_ios_rounded),
             ),
             Divider(),
+            Divider(),
             ListTile(
               leading: Icon(Icons.help),
               title: Text("Help"),
-              onTap: () => print("Help"),
+              onTap: () => Get.to(HelpPage()),
               trailing: Icon(Icons.arrow_forward_ios_rounded),
             ),
             Divider(),

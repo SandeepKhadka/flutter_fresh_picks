@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:keyboard/Favourite/fav_screen.dart';
 import 'package:keyboard/Pages/Drawer.dart';
+import 'package:keyboard/Pages/Product_Details.dart';
 import 'package:keyboard/Widgets/BestSelling.dart';
 import 'package:keyboard/Widgets/Carousel.dart';
 import 'package:keyboard/Widgets/Exotic.dart';
 import 'package:keyboard/Widgets/Navbar.dart';
 import 'package:keyboard/Widgets/ProductWidget.dart';
 import 'package:keyboard/controller/getProduct_controller.dart';
+import 'package:keyboard/controller/get_banner_controller.dart';
 import 'package:keyboard/controller/user_Controller.dart';
 import 'package:keyboard/model/getProducts_model.dart';
+import 'package:keyboard/newAdded/api_constants.dart';
 import 'package:keyboard/payment/khalti.dart';
 
 class HomePage extends StatefulWidget {
@@ -37,12 +41,6 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: ListView(
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Get.to(KhaltiExampleApp());
-                  },
-                  child: Text(Get.find<UserController>().userName),
-                ),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     vertical: 10,
@@ -105,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: EdgeInsets.only(top: 20, left: 10),
                   child: Text(
-                    "Best Selling",
+                    "New Product",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
@@ -144,19 +142,6 @@ class SearchPage extends StatefulWidget {
   _SearchPageState createState() => _SearchPageState();
 }
 
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-
-// import '../controller/getProduct_controller.dart';
-// import '../model/getProducts_model.dart';
-
-// class SearchPage extends StatefulWidget {
-//   const SearchPage({Key? key}) : super(key: key);
-
-//   @override
-//   _SearchPageState createState() => _SearchPageState();
-// }
-
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   List<GetProducts> _products = [];
@@ -165,16 +150,18 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
-    _fetchProducts();
+    // Get.find<ProductController>().products
+    print(Get.find<ProductController>().products);
+    _products = Get.find<ProductController>().products;
   }
 
-  void _fetchProducts() async {
-    try {
-      _products = await Get.find<ProductController>().get();
-    } catch (e) {
-      print('Error fetching products: $e');
-    }
-  }
+  // void _fetchProducts() async {
+  //   try {
+  //     _products = await Get.find<ProductController>().get();
+  //   } catch (e) {
+  //     print('Error fetching products: $e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -196,18 +183,36 @@ class _SearchPageState extends State<SearchPage> {
           onChanged: _updateSearchResults,
         ),
       ),
-      body: ListView.builder(
-        itemCount: _searchResults.length,
-        itemBuilder: (context, index) {
-          final product = _searchResults[index];
-          return ListTile(
-            title: Text(product.name),
-            onTap: () {
-              // Handle tapping on search result
-            },
-          );
-        },
-      ),
+      body: _searchController.text.isEmpty
+          ? Center(
+              child: Text("Search Product Here ..."),
+            )
+          : ListView.builder(
+              itemCount: _searchResults.length,
+              itemBuilder: (context, index) {
+                final product = _searchResults[index];
+                return ListTile(
+                  trailing: Image(
+                    image: NetworkImage(
+                      PRODUCT_IMAGE_URL + product.image,
+                    ),
+                    height: 40,
+                    width: 40,
+                  ),
+                  title: Text(product.name),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductDetails(
+                          productss: product,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
     );
   }
 

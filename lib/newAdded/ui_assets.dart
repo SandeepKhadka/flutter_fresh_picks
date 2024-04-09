@@ -14,6 +14,7 @@ class UIAssets {
 
   static const String privacypolicyImage = "$imageDir/compliant.png";
   static const String contactUs = "$imageDir/contact.png";
+  static const String userphoto = "$imageDir/user-avatar.png";
 
   static const String gifLoading = "$gifDir/loading.gif";
   static const String errorAnimation = "$animDir/error.json";

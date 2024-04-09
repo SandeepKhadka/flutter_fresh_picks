@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:keyboard/checkout/checkout.dart';
 import 'package:keyboard/controller/wishlist_controller.dart';
+import 'package:keyboard/newAdded/api_constants.dart';
 import 'package:keyboard/newAdded/ui_assets.dart';
 import '../Widgets/Navbar.dart';
 
@@ -37,7 +38,7 @@ class _MyCartState extends State<MyCart> {
     return totalPrice;
   }
 
-  int shppingcost = 500;
+  int shppingcost = 300;
 
   void incrementCounter(int index) {
     final wishlistController = Get.find<WishlistController>();
@@ -108,11 +109,12 @@ class _MyCartState extends State<MyCart> {
                         return Column(
                           children: [
                             ListTile(
-                              leading: SizedBox(
-                                width: 60,
-                                height: 60,
-                                child: Text("iMG"),
-                              ),
+                              leading: Image(
+                                  image: NetworkImage(
+                                      PRODUCT_IMAGE_URL + cartItem.image),
+                                  height: 60,
+                                  width: 60,
+                                  fit: BoxFit.cover),
                               title: Row(
                                 children: [
                                   Expanded(
@@ -185,7 +187,7 @@ class _MyCartState extends State<MyCart> {
                                         ],
                                       ),
                                       Text(
-                                        "Rs ${double.parse(cartItem.price) * (quantities[index] ?? 1)}",
+                                        "Rs ${double.parse(cartItem.discount) > 0 ? double.parse(cartItem.discount) * (quantities[index] ?? 1) : double.parse(cartItem.price) * (quantities[index] ?? 1)}",
                                         style: TextStyle(fontSize: 20),
                                       ),
                                     ],

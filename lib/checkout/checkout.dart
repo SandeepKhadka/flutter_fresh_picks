@@ -228,7 +228,7 @@ class _CheckoutState extends State<Checkout> {
                   if (selectedLocation.isNotEmpty && paymentMethod.isNotEmpty) {
                     if (paymentMethod == 'Khalti') {
                       print('Continue Khalti online');
-                      Get.to(KhaltiExampleApp());
+                      Get.to(KhaltiExampleApp(totalPrice:discountedPrice,address: selectedLocation,productJsonData: widget.productJsonData,));
                       // Add your logic for Khalti payment continuation
                     } else {
                       print("Address: $selectedLocation");

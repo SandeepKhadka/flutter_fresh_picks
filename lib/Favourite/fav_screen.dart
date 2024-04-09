@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:keyboard/model/getProducts_model.dart';
+import 'package:keyboard/newAdded/api_constants.dart';
 import 'package:keyboard/newAdded/ui_assets.dart';
 import '../controller/wishlist_controller.dart';
 import '../Pages/Product_Details.dart';
@@ -9,7 +10,7 @@ class FavoritePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( 
+      appBar: AppBar(
         title: Text('Favorite Page'),
       ),
       body: Get.find<WishlistController>().wishlist.isEmpty
@@ -25,7 +26,8 @@ class FavoritePage extends StatelessWidget {
                   SizedBox(height: 5),
                   Text(
                     "Your wishlist is empty",
-                    style: TextStyle(fontSize: 18),                  ),
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ],
               ),
             )
@@ -35,31 +37,29 @@ class FavoritePage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final product = _.wishlist[index];
                   return ListTile(
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            // Navigate to product details page when clicking on product name
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProductDetailsPage(
-                                  product: product,
-                                ),
-                              ),
-                            );
-                          },
-                          child: Text(
+                    leading: Image.network(
+                      PRODUCT_IMAGE_URL + product.image,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
+                    title: GestureDetector(
+                      onTap: () {
+                        Get.to(ProductDetails(productss: product));
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
                             product.name,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                        ),
-                        Text(
-                          'Price: ${product.price}',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
+                          Text(
+                            'Price: ${product.price}',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
                     ),
                     trailing: IconButton(
                       icon: Icon(
@@ -69,6 +69,11 @@ class FavoritePage extends StatelessWidget {
                       onPressed: () {
                         // Remove item from wishlist when clicking on delete button
                         _.removeFromWishlist(product);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Product Removed from Wishlist'),
+                          duration: Duration(seconds: 1),
+                        ));
+
                         _.update();
                       },
                     ),

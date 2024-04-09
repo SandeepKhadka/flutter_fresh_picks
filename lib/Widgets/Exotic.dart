@@ -64,7 +64,9 @@ class ExoticItemWidget extends StatelessWidget {
                                 height: 2,
                               ),
                               Text(
-                                _.exoticproducts[index].price,
+                                "Quantity= " +
+                                    _.exoticproducts[index].price +
+                                    " KG",
                                 style: TextStyle(
                                   fontSize: 15,
                                 ),

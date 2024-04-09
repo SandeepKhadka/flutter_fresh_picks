@@ -23,6 +23,7 @@ class UserController extends GetxController {
   }
 
   String get userName => user.name;
+  String get phone => user.phone;
   String get email => user.email;
   int get id => user.id;
 }

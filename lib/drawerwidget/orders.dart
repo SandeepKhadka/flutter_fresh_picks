@@ -5,8 +5,7 @@ import 'package:keyboard/controller/myOrders_Controller.dart';
 import 'package:keyboard/controller/user_Controller.dart';
 import 'package:keyboard/model/getOrder_model.dart';
 
-import '../checkout/final_order.dart'; // Assuming Order class is defined here
-// Importing OrderTimeline widget
+import '../checkout/final_order.dart';
 
 enum Action { delete }
 
@@ -49,14 +48,15 @@ class _OrdersState extends State<Orders> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
-                        // Show additional details in a dialog
-                        _showOrderDetailsDialog(_.getMyOrders[index]);
+                        // Navigate to order details page
+                        Get.to(OrderDetails(order: _.getMyOrders[index]));
                       },
                       child: Card(
                         margin: EdgeInsets.all(8.0),
                         child: ListTile(
                           title: Text(
                             'Order Number: ${_.getMyOrders[index].orderNumber}',
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,38 +82,85 @@ class _OrdersState extends State<Orders> {
       ),
     );
   }
+}
 
-  void _showOrderDetailsDialog(Order order) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Order Details'),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Order Number: ${order.orderNumber}'),
-                Text('Delivery Address: ${order.deliveryAddress}'),
-                Text('Delivery Charge: ${order.deliveryCharge}'),
-                Text('Total Amount: ${order.totalAmount}'),
-                Text('Payment Method: ${order.paymentMethod}'),
-                Text('Payment Status: ${order.paymentStatus}'),
-                Text('ID: ${order.id}'),
-                Text('Condition: ${order.condition}'),
-              ],
+class OrderDetails extends StatelessWidget {
+  final Order order;
+
+  const OrderDetails({Key? key, required this.order}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Order Details'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Order Number: ${order.orderNumber}',
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Close'),
-            ),
+            SizedBox(height: 8.0),
+            Text('Delivery Address: ${order.deliveryAddress}'),
+            SizedBox(height: 8.0),
+            Text('Total Amount: ${order.totalAmount}'),
+            SizedBox(height: 16.0),
+            OrderTimeline(order: order),
           ],
-        );
-      },
+        ),
+      ),
+    );
+  }
+}
+
+class OrderTimeline extends StatelessWidget {
+  final Order order;
+
+  const OrderTimeline({Key? key, required this.order}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Order Timeline',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 8),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: order.products.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: CircleAvatar(
+                child: Text((index + 1).toString()),
+              ),
+              title: Text(order.products[index].name),
+              subtitle:
+                  Text("Quantity = " + order.products[index].quantity + " KG"),
+            );
+          },
+        ),
+        Center(
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green[100],
+                padding: EdgeInsets.only(left: 10, right: 10),
+                textStyle: TextStyle(fontSize: 17),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32.0),
+                ),
+              ),
+              onPressed: () {},
+              child: Text("Condition = " + order.condition.toString())),
+        )
+      ],
     );
   }
 }

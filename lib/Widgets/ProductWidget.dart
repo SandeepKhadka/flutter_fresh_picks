@@ -6,33 +6,6 @@ import '../Pages/Product_Details.dart';
 
 class ProductItemWidget extends StatelessWidget {
   // Define lists for product names, images, descriptions, and prices
-  final List<String> productNames = [
-    "Fruits",
-    "Vegetables",
-    "Dairy Products",
-    "Exotic Foods",
-  ];
-
-  final List<String> productImages = [
-    "assets/fruits.png",
-    "assets/vegetables.png",
-    "assets/dairy.png",
-    "assets/df.png",
-  ];
-
-  final List<String> productDescriptions = [
-    "Description of Fruits",
-    "Description of Vegetables",
-    "Description of Dairy Products",
-    "Description of Exotic Foods",
-  ];
-
-  final List<String> productNutritions = [
-    "100",
-    "200",
-    "300",
-    "400",
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +115,8 @@ class ProductItemWidget extends StatelessWidget {
                                             height: 2,
                                           ),
                                           Text(
-                                            "${_.getDiscountProduct[index].quantity}KG",
+                                            "Quantity = " +
+                                                "${_.getDiscountProduct[index].quantity}KG",
                                             style: TextStyle(
                                               fontSize: 15,
                                             ),

@@ -1,11 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:keyboard/controller/user_Controller.dart';
+import 'package:keyboard/drawerwidget/location.dart';
 import 'package:keyboard/editprofile/email.dart';
 import 'package:keyboard/editprofile/location.dart';
 import 'package:keyboard/editprofile/name.dart';
 import 'package:keyboard/editprofile/password.dart';
+import 'package:keyboard/newAdded/ui_assets.dart';
 import 'package:provider/provider.dart';
 
 class MyDetails extends StatelessWidget {
@@ -67,24 +71,26 @@ class _MyDetailsWidgetState extends State<_MyDetailsWidget> {
                 children: [
                   CircleAvatar(
                     radius: 70,
-                    backgroundImage: _image != null ? FileImage(_image!) : null,
-                    child: _image == null ? Icon(Icons.person, size: 70) : null,
+                    // backgroundImage: AssetImage("user-avatar.png"),
+
+                    // _image != null ? FileImage(_image!) : null,
+                    child: Image.asset(UIAssets.userphoto),
                   ),
-                  Positioned(
-                    bottom: -7,
-                    right: -9,
-                    child: IconButton(
-                      onPressed: () => _getImage(context),
-                      icon: Icon(Icons.camera_alt_rounded),
-                    ),
-                  ),
+                  // Positioned(
+                  //   bottom: -7,
+                  //   right: -9,
+                  //   child: IconButton(
+                  //     onPressed: () => _getImage(context),
+                  //     icon: Icon(Icons.camera_alt_rounded),
+                  //   ),
+                  // ),
                 ],
               ),
               const SizedBox(height: 50),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => NameWidget()));
+                  // Navigator.of(context).push(
+                  //     MaterialPageRoute(builder: (context) => NameWidget()));
                   // Add onTap functionality
                 },
                 child: Card(
@@ -104,24 +110,24 @@ class _MyDetailsWidgetState extends State<_MyDetailsWidget> {
                       ),
                     ),
                     subtitle: Text(
-                      "prajaljungkunwar",
+                      Get.find<UserController>().userName,
                       style: TextStyle(
                         fontStyle: FontStyle
                             .italic, // Optional: Adjust the style as needed
                       ),
                     ),
-                    trailing: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.arrow_forward_ios),
-                    ),
+                    // trailing: IconButton(
+                    //   onPressed: () {},
+                    //   icon: Icon(Icons.arrow_forward_ios),
+                    // ),
                   ),
                 ),
               ),
               SizedBox(height: 15),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => EmailWidget()));
+                  // Navigator.of(context).push(
+                  //     MaterialPageRoute(builder: (context) => EmailWidget()));
                   // Add onTap functionality
                 },
                 child: Card(
@@ -141,24 +147,24 @@ class _MyDetailsWidgetState extends State<_MyDetailsWidget> {
                       ),
                     ),
                     subtitle: Text(
-                      "prajaljungkunwar@gmail.com",
+                      Get.find<UserController>().email,
                       style: TextStyle(
                         fontStyle: FontStyle
                             .italic, // Optional: Adjust the style as needed
                       ),
                     ),
-                    trailing: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.arrow_forward_ios),
-                    ),
+                    // trailing: IconButton(
+                    //   onPressed: () {},
+                    //   icon: Icon(Icons.arrow_forward_ios),
+                    // ),
                   ),
                 ),
               ),
               SizedBox(height: 15),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => LocationWidget()));
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (context) => LocationWidget()));
                   // Add onTap functionality
                 },
                 child: Card(
@@ -171,67 +177,71 @@ class _MyDetailsWidgetState extends State<_MyDetailsWidget> {
                     contentPadding: EdgeInsets.all(15),
                     leading: Icon(Icons.location_pin),
                     title: Text(
-                      "Location",
+                      "Phone Number",
                       style: TextStyle(
                         fontWeight: FontWeight
                             .bold, // Optional: Adjust the style as needed
                       ),
                     ),
                     subtitle: Text(
-                      "Rambazar",
+                      Get.find<UserController>().phone,
                       style: TextStyle(
                         fontStyle: FontStyle
                             .italic, // Optional: Adjust the style as needed
                       ),
                     ),
-                    trailing: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.arrow_forward_ios),
-                    ),
+                    // trailing: IconButton(
+                    //   onPressed: () {},
+                    //   icon: Icon(Icons.arrow_forward_ios),
+                    // ),
                   ),
                 ),
               ),
               SizedBox(height: 15),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PasswordWidget()));
-                  // Add onTap functionality
-                },
-                child: Card(
-                  elevation: 0.8,
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: ListTile(
-                    contentPadding: EdgeInsets.all(15),
-                    leading: Icon(Icons.lock),
-                    title: Text(
-                      "Password",
-                      style: TextStyle(
-                        fontWeight: FontWeight
-                            .bold, // Optional: Adjust the style as needed
-                      ),
-                    ),
-                    subtitle: Text(
-                      "******",
-                      style: TextStyle(
-                        fontStyle: FontStyle
-                            .italic, // Optional: Adjust the style as needed
-                      ),
-                    ),
-                    trailing: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.arrow_forward_ios),
-                    ),
-                  ),
-                ),
-              ),
+
+              // GestureDetector(
+              //   onTap: () {
+              //     Navigator.of(context).push(MaterialPageRoute(
+              //         builder: (context) => PasswordWidget()));
+              //     // Add onTap functionality
+              //   },
+              //   child: Card(
+              //     elevation: 0.8,
+              //     color: Colors.white,
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(10),
+              //     ),
+              //     child: ListTile(
+              //       contentPadding: EdgeInsets.all(15),
+              //       leading: Icon(Icons.lock),
+              //       title: Text(
+              //         "Password",
+              //         style: TextStyle(
+              //           fontWeight: FontWeight
+              //               .bold, // Optional: Adjust the style as needed
+              //         ),
+              //       ),
+              //       subtitle: Text(
+              //         "******",
+              //         style: TextStyle(
+              //           fontStyle: FontStyle
+              //               .italic, // Optional: Adjust the style as needed
+              //         ),
+              //       ),
+              //       trailing: IconButton(
+              //         onPressed: () {},
+              //         icon: Icon(Icons.arrow_forward_ios),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: 15),
               ElevatedButton(
-                onPressed: () => _saveChanges(context),
-                child: Text("Save Changes"),
+                onPressed: () => Get.to(UpdateProfile()),
+                child: Text(
+                  "Edit Profile",
+                  style: TextStyle(color: Colors.white),
+                ),
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   backgroundColor: Colors.green,
