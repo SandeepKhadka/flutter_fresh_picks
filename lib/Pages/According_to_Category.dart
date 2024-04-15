@@ -118,6 +118,7 @@ class _AccToCategoryState extends State<AccToCategory> {
                                               ),
                                               SizedBox(height: 5),
                                               Text(
+                                                overflow: TextOverflow.ellipsis,
                                                 _.getProductAccCategory[index]
                                                     .description,
                                                 style: TextStyle(fontSize: 14),

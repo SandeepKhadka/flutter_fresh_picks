@@ -13,7 +13,25 @@ class GetBannersController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchBanners();
+    // fetchBanners();
+    get();
+  }
+
+  get() async {
+    isLoading.value = true;
+
+    var response = await http.get(Uri.parse(GET_ALL_BANNER_API));
+    if (response.statusCode == 200) {
+      print("Hit");
+      var getpackage = jsonDecode(response.body)["banners"];
+      this.getBanner = getpackage
+          .map<Banner>((e) => Banner.fromJson(e))
+          .toList();
+      // isLoading.value = false;
+      print(getpackage);
+      isLoading.value = false;
+      update();
+    }
   }
 
   void fetchBanners() async {
@@ -28,8 +46,11 @@ class GetBannersController extends GetxController {
         List<Banner> banners = bannersJson
             .map((bannerJson) => Banner.fromJson(bannerJson))
             .toList();
+        // Get.snackbar("", banners);
+        print(banners);
 
         getBanner.assignAll(banners);
+        update();
       } else {
         isLoading.value = false;
 

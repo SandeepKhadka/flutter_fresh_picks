@@ -4,6 +4,8 @@ import 'package:keyboard/Login/Signup.dart';
 import 'package:keyboard/Login/forgotpassword.dart';
 import 'package:keyboard/Pages/homepage.dart';
 import 'package:keyboard/controller/authentication_controller.dart';
+import 'package:keyboard/controller/getProduct_controller.dart';
+import 'package:keyboard/controller/get_banner_controller.dart';
 
 import 'package:keyboard/newAdded/CustomValidator.dart';
 import 'package:keyboard/newAdded/loading_dialog.dart';
@@ -21,6 +23,10 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool obscureText = true;
+  void initState() {
+    super.initState();
+    Get.find<GetBannersController>().fetchBanners();
+  }
 
   @override
   Widget build(BuildContext context) {

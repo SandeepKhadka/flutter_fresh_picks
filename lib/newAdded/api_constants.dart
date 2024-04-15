@@ -1,12 +1,12 @@
-const IMAGE_URL = "http://gameon.ableinnovation.com.np/";
+const IMAGE_URL = "http://192.168.254.3:8000/";
 const PRODUCT_IMAGE_URL =
-    "http://gameon.ableinnovation.com.np/uploads/product/";
+    "http://192.168.254.3:8000/uploads/product/";
 const CATEGORY_IMAGE_URL =
-    "http://gameon.ableinnovation.com.np/uploads/category/";
+    "http://192.168.254.3:8000/uploads/category/";
 const BANNER_IMAGE_URL =
-    "http://gameon.ableinnovation.com.np/uploads/banner/";
+    "http://192.168.254.3:8000/uploads/banner/";
 
-const BASE_URL = "http://gameon.ableinnovation.com.np/api";
+const BASE_URL = "http://192.168.254.3:8000/api";
 const LOGIN_API = "$BASE_URL/login";
 const SIGNUP_API = "$BASE_URL/signup";
 const GETPRODUCT_API = "$BASE_URL/getProducts";

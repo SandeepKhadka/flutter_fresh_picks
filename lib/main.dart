@@ -23,9 +23,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Khalti.init(
-      publicKey: 'test_public_key_196df8c10c0743f68f66d5ded92b5157ddd',
+      publicKey: 'test_public_key_196df8c10c0743f68f66d5ded92b5157',
       enabledDebugging: false);
 
+  Get.put(GetBannersController());
   Get.put(ProductController());
 
   Get.put(AuthenticationController());
@@ -34,7 +35,6 @@ Future<void> main() async {
   Get.put(GetCategoryController());
   Get.put(BuyController());
   Get.put(MyOrder());
-  Get.put(GetBannersController());
   Get.put(UpdateProfileController());
 
   runApp(const GetMaterialApp(

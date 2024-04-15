@@ -64,9 +64,9 @@ class ExoticItemWidget extends StatelessWidget {
                                 height: 2,
                               ),
                               Text(
-                                "Quantity= " +
-                                    _.exoticproducts[index].price +
-                                    " KG",
+                                "Quantity = " +
+                                    
+                                    " 1 KG",
                                 style: TextStyle(
                                   fontSize: 15,
                                 ),
@@ -79,7 +79,7 @@ class ExoticItemWidget extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "Rs ${"100"}", // Example price calculation
+                                    "Rs " +  _.exoticproducts[index].price , // Example price calculation
                                     style: TextStyle(
                                       fontSize: 20,
                                       color: Colors.green[400],

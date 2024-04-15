@@ -143,7 +143,7 @@ class OrderTimeline extends StatelessWidget {
               ),
               title: Text(order.products[index].name),
               subtitle:
-                  Text("Quantity = " + order.products[index].quantity + " KG"),
+                  Text("Quantity = " + order.products[index].quantity.toString()+ " KG"),
             );
           },
         ),
